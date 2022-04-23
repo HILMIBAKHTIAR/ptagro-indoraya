@@ -1,52 +1,82 @@
+
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
 
-    @include('admin.layout.top')
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
 
-</head>
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    
+   @include('layout.top')
+    
+  </head>
 
-<body id="page-top">
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+        @include('layout.navigation')
+        <!-- / Menu -->
 
-        <!-- Sidebar -->
-        @include('admin.layout.navigation')
-        <!-- End of Sidebar -->
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+          @include('layout.header')
 
-            <!-- Main Content -->
-            <div id="content">
+          <!-- / Navbar -->
 
-                <!-- Topbar -->
-                @include('admin.layout.header')
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                @yield('content')
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            @include('admin.layout.bottom')
-            <!-- End of Footer -->
-
+          <!-- Content wrapper -->
+          @yield('content')
+          <!-- Content wrapper -->
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- / Layout page -->
+      </div>
 
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- / Layout wrapper -->
+s
 
-    <!-- Scroll to Top Button-->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
+    <script src="../assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
 
+    <!-- Vendors JS -->
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-</body>
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
 
+    <!-- Page JS -->
+    <script src="../assets/js/dashboards-analytics.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
 </html>
