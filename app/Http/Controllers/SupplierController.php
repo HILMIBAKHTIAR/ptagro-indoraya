@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Kategori;
+use App\Supplier;
 use Illuminate\Http\Request;
+
 
 class SupplierController extends Controller
 {
@@ -13,8 +17,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
-        return view('supplier.index');
+        $data_supplier = Supplier::all();
+        return view('supplier.index', compact('data_supplier'));
     }
 
     /**
@@ -25,6 +29,7 @@ class SupplierController extends Controller
     public function create()
     {
         //
+        // return view('supplier.create');
     }
 
     /**
@@ -36,6 +41,34 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->all());
+        $request->validate([
+
+            'perusahaan' => 'required',
+            'nama_supplier' => 'required',
+            'no_telp' => 'required',
+            'situs_web' => 'required',
+            'email' => 'required',
+            'alamat' => 'required',
+            'kota' => 'required',
+            'kode_pos' => 'required',
+            'catatan' => 'required'
+        ]);
+
+        $data_supplier = Supplier::create([
+            'perusahaan' => $request->perusahaan,
+            'nama_supplier' => $request->nama_supplier,
+            'no_telp' => $request->no_telp,
+            'situs_web' => $request->situs_web,
+            'email' => $request->email,
+            'alamat' => $request->alamat,
+            'kota' => $request->kota,
+            'kode_pos' => $request->kode_pos,
+            'catatan' => $request->catatan
+        ]);
+
+        $data_supplier->save();
+        return redirect('/supplier')->with('status', 'Data Supplier Berhasil Ditambahkan');
     }
 
     /**
@@ -58,6 +91,8 @@ class SupplierController extends Controller
     public function edit($id)
     {
         //
+        $data_supplier = Supplier::find($id);
+        return view('supplier.edit', compact('data_supplier'));
     }
 
     /**
@@ -70,6 +105,31 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+
+            'perusahaan' => 'required',
+            'nama_supplier' => 'required',
+            'no_telp' => 'required',
+            'situs_web' => 'required',
+            'email' => 'required',
+            'alamat' => 'required',
+            'kota' => 'required',
+            'kode_pos' => 'required',
+            'catatan' => 'required'
+        ]);
+
+        $data_supplier = Supplier::find($id);
+        $data_supplier->perusahaan = $request->perusahaan;
+        $data_supplier->nama_supplier = $request->nama_supplier;
+        $data_supplier->no_telp = $request->no_telp;
+        $data_supplier->situs_web = $request->situs_web;
+        $data_supplier->email = $request->email;
+        $data_supplier->alamat = $request->alamat;
+        $data_supplier->kota = $request->kota;
+        $data_supplier->kode_pos = $request->kode_pos;
+        $data_supplier->catatan = $request->catatan;
+        $data_supplier->save();
+        return redirect('/supplier')->with('status', 'Data Supplier Berhasil Diubah');
     }
 
     /**
@@ -81,5 +141,8 @@ class SupplierController extends Controller
     public function destroy($id)
     {
         //
+        $data_supplier = Supplier::findOrFail($id);
+        $data_supplier->delete();
+        return redirect('/supplier')->with('status', 'Data Supplier Berhasil Dihapus');
     }
 }
