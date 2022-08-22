@@ -22,9 +22,7 @@
   data-template="vertical-menu-template-free"
 >
   <head>
-    
    @include('layout.top')
-    
   </head>
 
   <body>
@@ -82,5 +80,6 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
     @yield('script')
+    @stack('scripts')
   </body>
 </html>

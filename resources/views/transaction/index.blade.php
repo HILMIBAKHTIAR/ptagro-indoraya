@@ -2,11 +2,15 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/transaction/style.css') }}">
 <style>
-    /* .list-pesanan > div:last-child {
-        border-bottom: none !important;
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
+    /* .kd-transaction{
+        background-color: grey;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        padding: 0.5rem 0.75rem;
+        rounded: 0.25rem;
     } */
+
 </style>
 @endsection
 @section('content')
@@ -57,44 +61,34 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="transacation-code ml-3">
-                                <p class="m-0 text-black">Kode Transaksi</p>
-                                <p class="m-0 text-black">T{{ date('dmYHis') }}</p>
-                                <input type="text" name="kode_transaksi" value="T{{ date('dmYHis') }}" hidden="">
-                            </div>
                             @foreach ($data_produk as $produk)
-                            @if($produk->stok != 0)
-
-                            <div style="width: 25%;border:3px solid rgb(243, 243, 243)" class="mb-4">
+                            <div style="width: 25%;" class="mb-2 shadow p-3">
                                 <div class="productCard">
                                     <div class="view overlay">
                                         <img class="card-img-top gambar" src="{{ asset('photo/' . $produk->photo) }}"
                                             width="40px" height="130px" alt="Card image cap" style="cursor: pointer"
                                             onclick="this.closest('form').submit();return false;">
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body" data-id="{{ $produk->id }}">
                                         <label class="card-text text-center font-weight-bold nama_produk"
-                                            style="text-transform: capitalize;">
-                                            {{ Str::words($produk->nama_produk,4) }}</label>
-                                        <p class="card-text text-center harga_produk">
-                                            Rp.
-                                            {{ number_format($produk->harga,2,',','.') }}
-                                            <p class="m-0">{{ $produk->stok }}</p>
-                                        </p>
-                                        <button class="btn-primary tambah_data">
-                                            tambah data
-                                        </button>
+                                            style="text-transform: capitalize;"
+                                        >{{ $produk->nama_produk }}</label>
+                                        <p 
+                                            class="card-text text-center harga_produk"
+                                            data-harga="{{ $produk->harga }}"
+                                        >Rp.{{ number_format($produk->harga) }}</p>
+                                        <button class="btn btn-primary tambah_data">tambah</button>
                                     </div>
 
                                 </div>
                             </div>
-                            @endif
                             @endforeach
                         </div>
                     </div>
                 </div>
             </div>
-            @if ($message = Session::get('transaction_success'))
+            {{-- @if ($message = Session::get('transaction_success')) --}}
+            {{-- modal success --}}
             <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -102,36 +96,30 @@
                         <div class="modal-body bg-grey">
                             <div class="row">
                                 <div class="col-12 text-center mb-4">
-                                    <img src="{{ asset('gif/success4.gif') }}">
+                                    <img src="{{ asset('assets/img/gif/successtr.gif') }}">
                                     <h4 class="transaction-success-text">Transaksi Berhasil</h4>
                                 </div>
-                                @php
-                                $transaksi = \App\Transaction::where('transactions.kode_transaksi', '=', $message)
-                                ->select('transactions.*')
-                                ->first();
-                                @endphp
                                 <div class="col-12">
                                     <table class="table-receipt">
                                         <tr>
                                             <td>
                                                 <span class="d-block little-td">Kode Transaksi</span>
-                                                <span class="d-block font-weight-bold">{{ $message }}</span>
+                                                <span class="d-block font-weight-bold" id="kdtransaksi" >T1020120102131</span>
                                             </td>
                                             <td>
                                                 <span class="d-block little-td">Tanggal</span>
                                                 <span
-                                                    class="d-block font-weight-bold">{{ date('d M, Y', strtotime($transaksi->created_at)) }}</span>
+                                                    class="d-block font-weight-bold" id="tanggal">17 agustus 1945</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <span class="d-block little-td">Kasir</span>
-                                                <span class="d-block font-weight-bold">{{ $transaksi->kasir }}</span>
+                                                <span class="d-block font-weight-bold" id="casir">hilmi</span>
                                             </td>
                                             <td>
                                                 <span class="d-block little-td">Total</span>
-                                                <span class="d-block font-weight-bold text-success">Rp.
-                                                    {{ number_format($transaksi->total,2,',','.') }}</span>
+                                                <span class="d-block font-weight-bold text-success" id="total_trk">Rp 78.000</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -140,37 +128,46 @@
                                             <td class="line-td" colspan="2"></td>
                                         </tr>
                                         <tr>
-                                            <td class="little-td big-td">Bayar</td>
-                                            <td>Rp. {{ number_format($transaksi->bayar,2,',','.') }}</td>
+                                            <td class="little-td big-td" >Bayar</td>
+                                            <td id="money">Rp 80.000</td>
                                         </tr>
                                         <tr>
                                             <td class="little-td big-td">Kembali</td>
-                                            <td>Rp. {{ number_format($transaksi->kembali,2,',','.') }}</td>
+                                            <td id="back">Rp.2000</td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-close-modal" data-dismiss="modal">Tutup</button>
-                            <a href="{{ url('/transaction/receipt/' . $message) }}" target="_blank"
+                            <button type="button" class="btn btn-sm btn-close-modal" data-bs-dismiss="modal" onclick="document.location.reload()" >Tutup</button>
+                            <a href="#" target="_blank"
                                 class="btn btn-sm btn-cetak-pdf">Cetak Struk</a>
                         </div>
                     </div>
                 </div>
             </div>
-            @endif
+
+            {{-- Transaction --}}
+            {{-- @endif --}}
             <div class="col-md-4">
-                <form method="POST" name="transaction_form" id="transaction_form"
-                    action="{{ url('/transaction/process') }}">
+                <form method="POST" name="" id="transaction_form"
+                    {{-- action="{{ route('transaction.process') }}"> --}}
+                    @csrf
                     <div class="row">
                         <div class="card">
-                            <div class="card-body mt-3">
+                            <div class="card-body">
                                 <div class="col-md-12">
                                     <table class="table-payment-1">
+                                        <tr class="kd-transaction">
+                                            <td class="text-left">kode transaksi</td>
+                                            <td class="text-right">T{{ date('dmYHis') }}</td>
+                                            <input type="text" name="kode_transaksi" value="T{{ date('dmYHis') }}"
+                                                hidden="">
+                                        </tr>
                                         <tr>
                                             <td class="text-left">Tanggal</td>
-                                            <td class="text-right">{{ date('d M, Y') }}</td>
+                                            <td class="text-right">{{ date('d M Y') }}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-left">Waktu</td>
@@ -201,21 +198,21 @@
                                             <p class="fs-5 m-0"><b class="nama_produk">ice coffe</b></p>
                                         </div>
                                         <div class="d-flex gap-2 align-items-center">
-                                            <button type="button" class="btn btn-success p-0 lh-1">
+                                            <button type="button" class="btn btn-success qty-plus p-0 lh-1">
                                                 <box-icon name='plus'></box-icon>
                                             </button>
                                             <b class="jumlah_produk">2</b>
-                                            <button type="button" class="btn btn-danger p-0 lh-1">
+                                            <button type="button" class="btn btn-danger qty-min p-0 lh-1">
                                                 <box-icon name='minus'></box-icon>
                                             </button>
                                         </div>
                                     </div>
                                     <div class="d-flex w-100">
                                         <div class="flex-grow-1">
-                                            <small class="harga_produk m-0">Rp14.000</small>
+                                            <small class="harga_produk m-0"></small>
                                         </div>
                                         <div class="d-flex">
-                                            <p class="harga_total_produk fs-5 m-0"><b>Rp. 14.000</b></p>
+                                            <p class="fs-5 m-0"><b class="harga_total_produk"></b></p>
                                         </div>
                                     </div>
                                 </div>
@@ -236,19 +233,26 @@
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1">
                                             <p class="fs-5 m-0">Subtotal</p>
-                                            <small>3 Menu</small>
+                                            <small><span class="jumlah_pesanan_produk"></span> Menu</small>
                                         </div>
                                         <div class="">
-                                            <p class="m-0 fs-3"><b>Rp. 36.000</b></p>
+                                            <p class="m-0 fs-3"><b class="subtotal">Rp. 36.000</b></p>
                                         </div>
                                     </div>
 
                                     <div class="input-group my-3">
                                         <span class="input-group-text">^</span>
-                                        <input type="number" name="nominal" class="form-control" placeholder="Masukkan nominal uang">
+                                        <input type="number" name="bayar" class="form-control"
+                                            placeholder="Inputkan nominal uang">
                                     </div>
+                                    <div class="alert alert-warning alert-dismissible d-none" id="alertbayar" role="alert">
+                                        <span>
+                                            {{-- untuk isi message --}}
+                                        </span>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                      </div>
 
-                                    <button class="btn btn-primary w-100">Bayar</button>
+                                    <button class="btn btn-primary w-100" id="bayar" type="button">Bayar</button>
                                 </div>
                             </div>
                         </div>
@@ -261,171 +265,69 @@
             <script src="{{ asset('plugins/js/quagga.min.js') }}"></script>
             <script src="{{ asset('js/transaction/script.js') }}"></script>
             <script type="text/javascript">
-                // @if($message = Session::get('transaction_success'))
-                // $('#successModal').modal('show');
-                // @endif
+                function rupiah(val) {
+                    let number = new Intl.NumberFormat('id-ID');
+                    
+                    return 'Rp' + number.format(val ?? 0);
+                }
 
-                // $(document).on('click', '.btn-pilih', function (e) {
-                //     e.preventDefault();
-                //     var kode_barang = $(this).prev().prev().children().first().text();
-                //     $.ajax({
-                //         url: "{{ url('/transaction/product') }}/" + kode_barang,
-                //         method: "GET",
-                //         success: function (response) {
-                //             var check = $('.kode-barang-td:contains(' + response.product
-                //                     .kode_barang + ')')
-                //                 .length;
-                //             if (check == 0) {
-                //                 tambahData(response.product.kode_barang, response.product
-                //                     .nama_barang, response
-                //                     .product.harga, response.product.stok, response.status);
-                //             } else {
-                //                 swal(
-                //                     "",
-                //                     "Barang telah ditambahkan",
-                //                     "error"
-                //                 );
-                //             }
-                //         }
-                //     });
-                // });
+                function qty(_this, plus_or_minus) {
+                    let id = $(_this).closest('.data-produk').data('id')
+                    let data_produk = data.list_pesanan.filter(val => val.id == id)[0]
+                    
+                    if (plus_or_minus == 'plus') {
+                        data_produk.jumlah_produk++
+                    } else if (plus_or_minus == 'min') {
+                        if (data_produk.jumlah_produk > 1) 
+                            data_produk.jumlah_produk-- 
+                        else
+                            data.list_pesanan.splice(data.list_pesanan.indexOf(data_produk), 1)
+                    }
+                    
+                    data.list_pesanan = [...data.list_pesanan]
+                }
 
-                // function startScan() {
-                //     Quagga.init({
-                //         inputStream: {
-                //             name: "Live",
-                //             type: "LiveStream",
-                //             target: document.querySelector('#area-scan')
-                //         },
-                //         decoder: {
-                //             readers: ["ean_reader"],
-                //             multiple: false
-                //         },
-                //         locate: false
-                //     }, function (err) {
-                //         if (err) {
-                //             console.log(err);
-                //             return
-                //         }
-                //         console.log("Initialization finished. Ready to start");
-                //         Quagga.start();
-                //     });
-
-                //     Quagga.onDetected(function (data) {
-                //         $('#area-scan').prop('hidden', true);
-                //         $('#btn-scan-action').prop('hidden', false);
-                //         $('.barcode-result').prop('hidden', false);
-                //         $('.barcode-result-text').html(data.codeResult.code);
-                //         $('.kode_barang_error').prop('hidden', true);
-                //         stopScan();
-                //     });
-                // }
-
-                // $(document).on('click', '.btn-scan', function () {
-                //     $('#area-scan').prop('hidden', false);
-                //     $('#btn-scan-action').prop('hidden', true);
-                //     $('.barcode-result').prop('hidden', true);
-                //     $('.barcode-result-text').html('');
-                //     $('.kode_barang_error').prop('hidden', true);
-                //     startScan();
-                // });
-
-                // $(document).on('click', '.btn-repeat', function () {
-                //     $('#area-scan').prop('hidden', false);
-                //     $('#btn-scan-action').prop('hidden', true);
-                //     $('.barcode-result').prop('hidden', true);
-                //     $('.barcode-result-text').html('');
-                //     $('.kode_barang_error').prop('hidden', true);
-                //     startScan();
-                // });
-
-                // $(document).on('click', '.btn-continue', function (e) {
-                //     e.stopPropagation();
-                //     var kode_barang = $('.barcode-result-text').text();
-                //     $.ajax({
-                //         url: "{{ url('/transaction/product/check') }}/" + kode_barang,
-                //         method: "GET",
-                //         success: function (response) {
-                //             var check = $('.kode-barang-td:contains(' + response.product
-                //                     .kode_barang + ')')
-                //                 .length;
-                //             if (response.check == 'tersedia') {
-                //                 if (check == 0) {
-                //                     tambahData(response.product.kode_barang, response.product
-                //                         .nama_barang,
-                //                         response.product.harga, response.product.stok, response
-                //                         .status);
-                //                     $('.close-btn').click();
-                //                 } else {
-                //                     swal(
-                //                         "",
-                //                         "Barang telah ditambahkan",
-                //                         "error"
-                //                     );
-                //                 }
-                //             } else {
-                //                 $('.kode_barang_error').prop('hidden', false);
-                //             }
-                //         }
-                //     });
-                // });
-
-                // $(document).on('click', '.btn-bayar', function () {
-                //     var total = parseInt($('.nilai-total2-td').val());
-                //     var bayar = parseInt($('.bayar-input').val());
-                //     var check_barang = parseInt($('.jumlah_barang_text').length);
-                //     if (bayar >= total) {
-                //         $('.nominal-error').prop('hidden', true);
-                //         if (check_barang != 0) {
-                //             if ($('.diskon-input').attr('hidden') != 'hidden') {
-                //                 $('.diskon-input').addClass('is-invalid');
-                //             } else {
-                //                 $('#transaction_form').submit();
-                //             }
-                //         } else {
-                //             swal(
-                //                 "",
-                //                 "Pesanan Kosong",
-                //                 "error"
-                //             );
-                //         }
-                //     } else {
-                //         if (isNaN(bayar)) {
-                //             $('.bayar-input').valid();
-                //         } else {
-                //             $('.nominal-error').prop('hidden', false);
-                //         }
-
-                //         if (check_barang == 0) {
-                //             swal(
-                //                 "",
-                //                 "Pesanan Kosong",
-                //                 "error"
-                //             );
-                //         }
-                //     }
-                // });
-
+                function qtyPlusMinus() {
+                    $('.qty-plus').unbind("click");
+                    $('.qty-plus').on('click', function() {
+                        qty(this, 'plus')
+                    })
+                    $('.qty-min').on('click', function() {
+                        qty(this, 'min')
+                    })
+                }
+                
                 let default_view_pesanan_element = $('#default-view-pesanan').clone()
-
                 let dynamic_data = {};
+                let subtotal = 0
                 let data = new Proxy(dynamic_data, {
                     set: function (target, key, value) {
                         target[key] = value;
                         if (dynamic_data.list_pesanan?.length) {
+                            subtotal = 0; // perlu set default value agar subtotal bisa dihitung ulang
+                            let info_pembayaran = $('#info-pembayaran')
+
                             $('#list-pesanan').html('')
                             $('#info-pembayaran').removeClass('d-none')
-                            
+
                             dynamic_data.list_pesanan.map(val => {
-                                let produk_element = $('.data-produk.d-none').clone().removeClass('d-none')
+                                let produk_element = $('.data-produk.d-none').clone().removeClass('d-none');
+                                let total_harga = val.harga_produk * val.jumlah_produk;
                                 for (let produk in val) {
-                                    console.log(produk, val[produk]);
-                                    produk_element.find(`.${produk}`).text(val[produk])
+                                    produk_element.find(`.${produk}`).text(produk == 'harga_produk' ? rupiah(val[produk]) : val[produk])
                                 }
+                                produk_element.find('.harga_total_produk').text(rupiah(total_harga))
                                 produk_element.appendTo('#list-pesanan')
+                                produk_element.data('id', val.id)
+                                
+                                subtotal += total_harga
                             })
-                        }
-                        else {
+
+                            info_pembayaran.find('.subtotal').text(rupiah(subtotal))
+                            info_pembayaran.find('.jumlah_pesanan_produk').text(dynamic_data.list_pesanan.length)
+
+                            qtyPlusMinus()
+                        } else {
                             $('#list-pesanan').html('')
                             default_view_pesanan_element.appendTo($('#list-pesanan'))
                             $('#info-pembayaran').addClass('d-none')
@@ -433,17 +335,72 @@
                         return true;
                     }
                 });
-                data.list_pesanan = []
 
-                $('.tambah_data').on('click', function() {
-                    let produk = {
-                        nama_produk: $(this).closest('.card-body').find('.nama_produk').text(),
-                        harga_produk: $(this).closest('.card-body').find('.harga_produk').text(),
-                        jumlah_produk: 1,
+                
+                data.list_pesanan = []
+                $('.tambah_data').on('click', function () {
+                    let card_body = $(this).closest('.card-body')
+                    let data_produk = data.list_pesanan.filter(val => val.id == card_body.data('id'))[0]
+                    if (data_produk) {
+                        data_produk.jumlah_produk++
+                        data.list_pesanan = [...data.list_pesanan] // refresh data agar yg di view berubah
+                    } else {
+                        let produk = {
+                            id: card_body.data('id'),
+                            nama_produk: card_body.find('.nama_produk').text(),
+                            harga_produk: card_body.find('.harga_produk').data('harga'),
+                            jumlah_produk: 1,
+                        }
+                        let list_pesanan = data.list_pesanan
+                        data.list_pesanan = [...list_pesanan, produk]
                     }
-                    let list_pesanan = data.list_pesanan
-                    data.list_pesanan = [...list_pesanan, produk]
                 })
 
+
+                $('#bayar').on('click', function () {
+                    
+                    let data_transaksi = {}
+                    $('#transaction_form').serializeArray().forEach((val, i) => {
+                        data_transaksi[val.name] = val.value
+                    });
+
+                    // let diskon = 50;
+                    let body_data = {
+                        ...data,
+                        ...data_transaksi,
+                        total_produk: data.list_pesanan.length,
+                        subtotal: subtotal,
+                        // diskon: diskon,
+                        // total: subtotal-(subtotal*diskon/100),
+                        total: subtotal,
+                    }
+
+                    $.ajax({
+                    type : 'POST',
+                    url : "{{ route('transaction.process') }}",
+                    data : body_data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('[name="_token"]').val()
+                    },
+                    dataType : 'json',
+                    success : function(response) {
+                        console.log(response)
+                        if(response.type == 'success') {
+                            $('#successModal').modal('show')
+                            $('#successModal').find('#kdtransaksi').text(response.data.kode_transaksi)
+                            $('#successModal').find('#tanggal').text(response.data.created_at)
+                            $('#successModal').find('#casir').text(response.data.kasir)
+                            $('#successModal').find('#total_trk').text(response.data.total)
+                            $('#successModal').find('#money').text(response.data.bayar)
+                            $('#successModal').find('#back').text(response.data.kembali)
+                        } else if (response.type == 'warning') {
+                            
+                            let alertbayar = $('#alertbayar')
+                            alertbayar.removeClass('d-none')
+                            alertbayar.find('span').text(response.message)
+                        }
+                    }
+                }); 
+                })
             </script>
             @endsection

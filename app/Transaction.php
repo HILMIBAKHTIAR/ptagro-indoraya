@@ -8,5 +8,20 @@ class Transaction extends Model
 {
     //
     protected $fillable =
-    ['kode_transaksi', 'kode_produk', 'nama_produk', 'harga', 'jumlah', 'total_harga', 'total_produk', 'subtotal', 'diskon', 'total', 'bayar', 'kembali', 'id_kasir', 'kasir',];
+    [
+        'kode_transaksi',
+        'total_produk',
+        'subtotal',
+        'diskon',
+        'total',
+        'bayar',
+        'kembali',
+        'id_kasir',
+        'kasir',
+    ];
+
+    public function detailTransaksi()
+    {
+        return $this->hasMany(DetailTransaksi::class);
+    }
 }

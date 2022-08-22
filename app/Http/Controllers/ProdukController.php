@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Bahan;
+use App\BahanProduk;
 use App\Produk;
 use App\Kategori;
+use App\Stock;
 use Dotenv\Validator;
+use Exception;
+use finfo;
 use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use PHPUnit\Util\Json;
+use Prophecy\Doubler\ClassPatch\ThrowablePatch;
+use Throwable;
 
 class ProdukController extends Controller
 {
@@ -21,18 +29,8 @@ class ProdukController extends Controller
         //
         $produk = Produk::all();
         $kategori = Kategori::all();
-        return view('produk.index', compact('produk', 'kategori'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('produk.create');
+        $stock = Stock::all();
+        return view('produk.index', compact('produk', 'kategori', 'stock'));
     }
 
     /**
@@ -49,19 +47,45 @@ class ProdukController extends Controller
             'nama_produk' => 'required',
             'kategori_id' => 'required',
             'harga' => 'required',
-            'stok' => 'required',
+            // 'stock_id' => 'required',
             'keterangan' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasSession()) {
-            // $input = $request->all()
             $input = $request->all();
+            $stock_id = $request->stock_id;
+            unset($input['bahan_qty']);
+            unset($input['stock_id']);
+            unset($input['_token']); // dihapus karena insertGetId tidak dapat menerima _token
+
             $input['photo'] = time() . '.' . $request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('photo'), $input['photo']);
+            try {
+                $id = Produk::insertGetId($input);
 
-            Produk::create($input);
-            return redirect('/produk')->with('success', 'Data berhasil ditambahkan');
+                $data_bahan = [];
+                // array_map(function ($val=>$i) use ($id) {
+                //     return [
+                //         'produk_id' => $id,
+                //         'stock_id' => $val,
+                //         'qty' => $request->bahan_qty[$val],
+                //     ];
+                // }, $stock_id);
+
+                foreach ($stock_id as $key => $value) {
+                    array_push($data_bahan, [
+                        'produk_id' => $id,
+                        'stock_id' => $stock_id[$key],
+                        'qty' => $request->bahan_qty[$key],
+                    ]);
+                }
+
+                Bahan::insert($data_bahan);
+            } catch (\Illuminate\Database\QueryException  $irr) {
+                return redirect('/produk')->with('erorr', 'kesalah input silahkan hubungi tim developer');
+            }
+            return redirect('/produk')->with('message', 'Data berhasil ditambahkan');
         }
 
         return response()->json(['error' => $request->errors()->all()]);
@@ -87,7 +111,9 @@ class ProdukController extends Controller
     public function edit($id)
     {
         //
-        return view('produk.edit');
+        $produk = Produk::find($id);
+        $kategori = Kategori::all();
+        return view('produk.edit', compact('produk', 'kategori'));
     }
 
     /**
@@ -103,10 +129,25 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required',
             'kategori_id' => 'required',
-            'harga_jual' => 'required',
-            'harga_pokok' => 'required',
+            'harga' => 'required',
+            'keterangan' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $produk = Produk::find($id);
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $photo_name = time() . '.' . $photo->getClientOriginalExtension();
+            $photo->move(public_path('photo'), $photo_name);
+            $produk->photo = $photo_name;
+        }
+        $produk->nama_produk = $request->get('nama_produk');
+        $produk->kategori_id = $request->get('kategori_id');
+        $produk->harga = $request->get('harga');
+        $produk->keterangan = $request->get('keterangan');
+        $produk->save();
+
+        return redirect('/produk')->with('success', 'Data berhasil diubah');
     }
 
     /**

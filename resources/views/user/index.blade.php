@@ -29,6 +29,11 @@
 </style>
 
 <div class="container-xxl flex-grow-1 container-p-y">
+  @if(session()->has('message'))
+  <div class="alert alert-success">
+      {{ session()->get('message') }}
+  </div>
+  @endif
   <h4 class="fw-bold py-3 mb-4">Tables User</h4>
 
   <!-- Basic Bootstrap Table -->
@@ -41,7 +46,7 @@
       </button>
   </div>
  @include('user.create')
- @include('supplier.edit')
+ 
       {{-- <div class="col-md text-right">
         <a href="{{ route('supplier.create') }}" class="btn btn-primary">tambah</a>
       </div> --}}
@@ -80,7 +85,7 @@
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger">Hapus</button>
                 </form>
-                <a href="{{ route('supplier.edit', $row->id) }}" class="btn btn-success" data-toggle="modal" data-target="#modaledit">Edit</a>
+                <a href="{{ route('user.edit', $row->id) }}" class="btn btn-success" data-toggle="modal" data-target="#modaledit">Edit</a>
               </td>
             </tr>
             @endforeach

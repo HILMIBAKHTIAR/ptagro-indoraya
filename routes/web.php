@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Contracts\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,24 +24,54 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['midleware' => 'auth', 'checkRole:admin,kasir'], function () {
-    Route::resource('/supplier', 'SupplierController');
-    Route::resource('/produk', 'ProdukController');
     Route::resource('/kategori', 'KategoriController');
+    //kelola supplier
+    Route::get('/supplier', 'SupplierController@index')->name('supplier');
+    Route::get('/supplier/create', 'SupplierController@create')->name('supplier.create');
+    Route::post('/supplier/store', 'SupplierController@store')->name('supplier.store');
+    Route::get('/supplier/{id}/edit', 'SupplierController@edit')->name('supplier.edit');
+    Route::patch('/supplier/{data_supplier}', 'SupplierController@update')->name('supplier.update');
+    Route::delete('/supplier/{id}/destroy', 'SupplierController@destroy')->name('supplier.destroy');
+
+
+    //kelola produk
+    Route::get('/produk', 'ProdukController@index')->name('produk');
+    Route::get('/produk/edit/{id}', 'ProdukController@edit')->name('produk.edit');
+    Route::post('/produk/store', 'ProdukController@store')->name('produk.store');
+    Route::post('/produk/update/{id}', 'ProdukController@update')->name('produk.update');
+    Route::delete('/produk/destroy/{id}', 'ProdukController@destroy')->name('produk.destroy');
 
 
     // transaksi
-    Route::get('/transaction', 'TransactionController@viewTransaction')->name('transaction');
-    // Route::get('/transaction', 'TransactionController@index')->name('transaction');
+    Route::get('/transaction', 'TransactionManageController@viewTransaction')->name('transaction');
     Route::get('/transaction/product/{id}', 'TransactionManageController@transactionProduct');
     Route::get('/transaction/product/check/{id}', 'TransactionManageController@transactionProductCheck');
-    Route::post('/transaction/process', 'TransactionManageController@transactionProcess');
-    Route::get('/transaction/recipt/{id}', 'TransactionController@receiptTransaction');
+    Route::post('/transaction/process', 'TransactionManageController@transactionProcess')->name('transaction.process');
 
     //Kelola User
     Route::get('/user', 'UserManageController@viewAccount')->name('user');
     Route::post('/user/create', 'UserManageController@createAccount')->name('user.create');
-    Route::get('/user/delete/{id}', 'UserManageController@deleteAccount')->name('user.delete');
-    Route::get('/account/edit/{id}', 'UserManageController@editAccount');
+    Route::delete('/user/delete/{id}', 'UserManageController@deleteAccount')->name('user.delete');
+    Route::get('/account/edit/{id}', 'UserManageController@editAccount')->name('user.edit');
     Route::post('/account/update', 'UserManageController@updateAccount');
     Route::get('/account/filter/{id}', 'UserManageController@filterTable');
+
+    // Kelola Report Income
+    Route::get('/report', 'ReportManageController@viewReport')->name('report');
+
+    //kelola Outflow
+    Route::get('/outflow', 'OutflowController@viewOutflow')->name('outflow');
+    Route::get('/outflowcetakview', 'OutflowController@cetakOutflow')->name('outflowcetakview');
+    Route::post('/outflow/storeOutflow', 'OutflowController@storeOutflow')->name('outflow.store');
+    Route::delete('/outflow/destroy/{id}', 'OutflowController@destroy')->name('outflow.delete');
+    Route::get('/outflow/edit/{id}', 'OutflowController@edit')->name('outflow.edit');
+    Route::patch('/outflow/{data_outflow}', 'OutflowController@update')->name('outflow.update')->middleware('auth');
+    Route::get('/outflow/cetakoutflowrange/{tglawal}/{tglakhir}', 'OutflowController@cetakoutflowrange')->name('cetakoutflow');
+
+    //kelola stock
+    Route::get('/stock', 'StockManageController@viewStock')->name('stock');
+    Route::get('/stock/edit/{id}', 'StockManageController@edit')->name('stock.edit');
+    Route::post('/stock/addstock', 'StockManageController@addstock')->name(('stock.store'));
+    Route::patch('/stock/{data_stock}', 'StockManageController@updateStock')->name('stock.update');
+    Route::get('/stock/delete/{id}', 'StockManageController@destroy')->name('stock.delete');
 });

@@ -3,6 +3,11 @@
 @section('content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
+  @if(session()->has('message'))
+  <div class="alert alert-success">
+      {{ session()->get('message') }}
+  </div>
+  @endif
   <h4 class="fw-bold py-3 mb-4">Table Kategori</h4>
 
   <!-- Basic Bootstrap Table -->

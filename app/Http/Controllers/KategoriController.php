@@ -48,7 +48,7 @@ class KategoriController extends Controller
         ]);
 
         $data->save();
-        return redirect()->route('kategori.index')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('kategori.index')->with('message', 'Data berhasil ditambahkan');
     }
 
     /**

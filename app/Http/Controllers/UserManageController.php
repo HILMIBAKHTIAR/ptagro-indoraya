@@ -37,7 +37,6 @@ class UserManageController extends Controller
         if ($check_access->kelola_akun == 1) {
             $users = User::all();
         }
-
     }
     // // Show View New Account
     // public function viewNewAccount()
@@ -113,7 +112,7 @@ class UserManageController extends Controller
                     $access->save();
                 }
 
-                Session::flash('create_success', 'Akun baru berhasil dibuat');
+                Session::flash('message', 'Akun baru berhasil dibuat');
 
                 return redirect('/user');
             } else if ($req->foto == '' && $check_email == 0 && $check_username == 0) {
@@ -144,21 +143,18 @@ class UserManageController extends Controller
                     $access->save();
                 }
 
-                Session::flash('create_success', 'Akun baru berhasil dibuat');
+                Session::flash('message', 'Akun baru berhasil dibuat');
 
                 return redirect('/user');
-            }
-            else if ($check_email != 0 && $check_username != 0) {
+            } else if ($check_email != 0 && $check_username != 0) {
                 Session::flash('both_error', 'Email dan username telah digunakan, silakan coba lagi');
 
                 return back();
-            }
-            else if ($check_email != 0) {
+            } else if ($check_email != 0) {
                 Session::flash('email_error', 'Email telah digunakan, silakan coba lagi');
 
                 return back();
-            }
-            else if ($check_username != 0) {
+            } else if ($check_username != 0) {
                 Session::flash('username_error', 'Username telah digunakan, silakan coba lagi');
 
                 return back();
@@ -233,18 +229,15 @@ class UserManageController extends Controller
                 Session::flash('update_success', 'Akun berhasil diubah');
 
                 return redirect('/account');
-            }
-            else if ($check_email != 0 && $check_username != 0 && $user_account->email != $req->email && $user_account->username != $req->username) {
+            } else if ($check_email != 0 && $check_username != 0 && $user_account->email != $req->email && $user_account->username != $req->username) {
                 Session::flash('both_error', 'Email dan username telah digunakan, silakan coba lagi');
 
                 return back();
-            }
-            else if ($check_email != 0 && $user_account->email != $req->email) {
+            } else if ($check_email != 0 && $user_account->email != $req->email) {
                 Session::flash('email_error', 'Email telah digunakan, silakan coba lagi');
 
                 return back();
-            }
-            else if ($check_username != 0 && $user_account->username != $req->username) {
+            } else if ($check_username != 0 && $user_account->username != $req->username) {
                 Session::flash('username_error', 'Username telah digunakan, silakan coba lagi');
 
                 return back();

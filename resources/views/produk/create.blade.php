@@ -13,12 +13,10 @@
                 <div class="alert alert-danger" style="display:none"></div>
                 <form class="image-upload" method="post" action="{{ route('produk.store') }}"
                     enctype="multipart/form-data">
-                    @csrf
-
+                    @csrf   
                     <div class="print-img" style="display:none">
                         <img src="" style="height:300px;width:500px">
                     </div>
-
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -58,8 +56,27 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="basic-default-company">Stok</label>
-                                <input name="stok" type="number" class="form-control" placeholder="stok" />
+                                <label class="form-label" for="basic-default-company">stock</label>
+
+                                @foreach ($stock as $item)
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="stock_id[]" type="checkbox" value="{{ $item->id }}" id="flexCheckDefault-{{ $item->id }}">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            {{ $item->nama_bahan }}
+                                        </label>
+                                        <input type="number" class="form-control" name="bahan_qty[]">
+                                    </div>
+                                @endforeach
+                                  
+                                {{-- <select name="stock_id"
+                                    class="form-control @error('stock_id') is-invalid @enderror">
+                                    @foreach ($stock as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('stock') == $item->id ? 'selected' : null }}>
+                                        {{ $item->nama_bahan }}
+                                    </option>
+                                    @endforeach
+                                </select> --}}
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -70,17 +87,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div>
-                            <label class="form-label" for="basic-default-company">Photo</label>
-                            <input name="photo" id="photo" type="file" onchange="previewphoto()" required />
+                        <div class="col-md-6">
+                            <label class="form-label" for="basic-default-message">Foto</label>
+                            <input name="photo" id="photo" type="file" class="form-control"  placeholder="Masukan Foto" />
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-success btn-lg" name="simpan" id="simpan" value="simpan"
+                        <button type="submit" class="btn btn-success btn-lg" id="simpan"
                             style="padding: 5px 50px; margin-top: 10px;">
+                            Simpan
+                        </button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

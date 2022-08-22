@@ -68,7 +68,7 @@ class SupplierController extends Controller
         ]);
 
         $data_supplier->save();
-        return redirect('/supplier')->with('status', 'Data Supplier Berhasil Ditambahkan');
+        return redirect('/supplier')->with('message', 'Data Supplier Berhasil Ditambahkan');
     }
 
     /**
@@ -119,15 +119,15 @@ class SupplierController extends Controller
         ]);
 
         $data_supplier = Supplier::find($id);
-        $data_supplier->perusahaan = $request->perusahaan;
-        $data_supplier->nama_supplier = $request->nama_supplier;
-        $data_supplier->no_telp = $request->no_telp;
-        $data_supplier->situs_web = $request->situs_web;
-        $data_supplier->email = $request->email;
-        $data_supplier->alamat = $request->alamat;
-        $data_supplier->kota = $request->kota;
-        $data_supplier->kode_pos = $request->kode_pos;
-        $data_supplier->catatan = $request->catatan;
+        $data_supplier->perusahaan = $request->get('perusahaan');
+        $data_supplier->nama_supplier = $request->get('nama_supplier');
+        $data_supplier->no_telp = $request->get('no_telp');
+        $data_supplier->situs_web = $request->get('situs_web');
+        $data_supplier->email = $request->get('email');
+        $data_supplier->alamat = $request->get('alamat');
+        $data_supplier->kota = $request->get('kota');
+        $data_supplier->kode_pos = $request->get('kode_pos');
+        $data_supplier->catatan = $request->get('catatan');
         $data_supplier->save();
         return redirect('/supplier')->with('status', 'Data Supplier Berhasil Diubah');
     }

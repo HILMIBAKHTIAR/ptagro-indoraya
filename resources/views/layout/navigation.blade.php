@@ -1,9 +1,16 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="{{route('home')}}">
-            <span class="font-weight-bold">GREY POS</span>
-        </a>
-
+        <a href="{{ route('home') }}">
+            {{-- <span class="app-brand-logo demo">
+                <img src="{{ asset('/assets/img/greylogo.png') }}" alt="Brand Logo" class="img-fluid" style="width: 70px;height:70px">
+            </span> --}}
+            <span class="app-brand-text demo">
+                <span class="text-brand">GREY</span>
+                <span class="text-muted">POS</span>
+            </span>
+            {{-- <div>
+                <span class="text-brand">GREY POS</span>
+              </div> --}}
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
@@ -27,7 +34,7 @@
                 <div data-i18n="Transactions">penjualan</div>
             </a>
             <!-- inventori -->
-        <li class="menu-item  {{ request()->is('supplier*')|| request()->is('stok*')? 'active open' : '' }}">
+        <li class="menu-item  {{ request()->is('supplier*')|| request()->is('stock*')? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="Layouts">Inventori</div>
@@ -35,14 +42,14 @@
 
             <ul class="menu-sub ">
                 <li class="menu-item {{ request()->is('supplier*') ? 'active' : '' }}">
-                    <a href="{{route('supplier.index')}}" class="menu-link">
+                    <a href="{{route('supplier')}}" class="menu-link">
                         <div data-i18n="Without navbar">supplier</div>
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->is('stok*') ? 'active' : '' }}"">
-            <a href=" #" class="menu-link">
-                    <div data-i18n="Without navbar">stok</div>
+                <li class="menu-item {{ request()->is('stock*') ? 'active' : '' }}"">
+                    <a href="{{ route('stock') }}" class="menu-link">
+                        <div data-i18n="Without navbar">stok</div>
                     </a>
                 </li>
 
@@ -64,9 +71,9 @@
                 </li>
                 {{-- produk --}}
                 <li class="menu-item {{ request()->is('produk*') ? 'active' : '' }}">
-                    <a href="{{ route('produk.index') }}" class="menu-link">
+                    <a href="{{ route('produk') }}" class="menu-link">
                         <div data-i18n="Account">produk</div>
-                    </a>
+                    </a>    
                 </li>
             </ul>
         </li>
@@ -78,7 +85,7 @@
                 <div data-i18n="Account Settings">User</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a href="{{ route('user') }}" class="menu-link">
                         <div data-i18n="Account">User</div>
                     </a>
@@ -91,20 +98,25 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('report*')|| request()->is('outflow*')? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-line-chart-down"></i>
                 <div data-i18n="Misc">Laporan</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="pages-misc-error.html" class="menu-link">
+                    <a href="{{ route('report') }}" class="menu-link">
                         <div data-i18n="Error">laporan masuk</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="pages-misc-under-maintenance.html" class="menu-link">
+                    <a href="{{ route('outflow') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">laporan keluar</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('outflowcetakview') }}" class="menu-link">
+                        <div data-i18n="Under Maintenance">cetak laporan</div>
                     </a>
                 </li>
             </ul>
