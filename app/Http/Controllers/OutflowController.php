@@ -14,7 +14,8 @@ class OutflowController extends Controller
     public function viewOutflow()
     {
         $data_outflow = Outflow::all();
-        return view('outflow.index_outflow', compact('data_outflow'));
+        $data_outflow = DB::table('outflows')->latest()->paginate(10);
+        return view('outflow.index_outflow', ['outflows' => $data_outflow], compact('data_outflow'));
     }
 
     public function storeOutflow(Request $request)

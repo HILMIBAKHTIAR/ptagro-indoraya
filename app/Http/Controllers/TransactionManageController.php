@@ -95,9 +95,7 @@ class TransactionManageController extends Controller
                 "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
 
             ];
-
             $id_transaction = Transaction::insertGetId($transaction);
-
             $detail_transaksi = [];
             foreach ($req->list_pesanan as $key => $value) {
                 array_push($detail_transaksi, [
@@ -111,25 +109,13 @@ class TransactionManageController extends Controller
                 ]);
             }
             DetailTransaksi::insert($detail_transaksi);
-
-            // update bahan stovk untuk ngurangi qty bahan dari produk
-            foreach ($req->list_pesanan as $key => $value) {
-                // $produk = Produk::where('kode_barang', $value['id'])->first();
-            
-                // $produk->save();
-            }
-
             $transaction['list_pesanan'] = $detail_transaksi;
-            // return json_encode($detail_transaksi);
-            // Session::flash('success', 'Transaksi berhasil dilakukan', $req->kode_transaksi);
-
             return json_encode([
                 'type' => 'success',
                 'message' => 'Transaksi berhasil dilakukan',
                 'data' => $transaction,
             ]);
         } else {
-            // Session::flash('error', 'Anda tidak memiliki akses untuk melakukan transaksi');
             return json_encode([
                 'type' => 'error',
                 'message' => 'Anda tidak memiliki akses untuk melakukan transaksi',
@@ -139,25 +125,8 @@ class TransactionManageController extends Controller
     }
 
     //fungsi cetak struk transaksi
-    public function receiptTransaction($id)
+    public function receiptTransaction()
     {
-        //
-        $id_account = Auth::id();
-        $check_access = Access::where('id_user', $id_account)->first();
-        if ($check_access->transaksi == 1) {
-            $transaction = Transaction::where('transaction.kode_transaksi', '=', $id)
-                ->select('transactions.*')
-                ->first();
-            $transactions = Transaction::where('transactions.kode_transaksi', '=', $id)
-                ->select('transactions.*')
-                ->get();
-
-            $diskon = $transaction->subtotal * $transaction->diskon / 100;
-            $customPaper = array(0, 0, 400.00, 283.80);
-            $pdf = PDF::loadview('transaction.receipt_transaction', compact('transaction', 'transactions', 'diskon', 'market'))->setPaper($customPaper, 'landscape');
-            return $pdf->stream();
-        } else {
-            return back();
-        }
+        return view('transaction.receipt_transaction');
     }
 }

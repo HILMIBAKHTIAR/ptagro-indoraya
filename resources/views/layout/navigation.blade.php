@@ -18,7 +18,7 @@
 
     <div class="menu-inner-shadow"></div>
 
-    <ul class="menu-inner py-1">
+    <ul class="menu-inner py-1">        
         <!-- Dashboard -->
         <li class="menu-item {{ request()->is('home') ? 'active' : '' }}">
             <a href="{{route('home')}}" class="menu-link">
@@ -26,13 +26,14 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
-
         {{-- Transaksi --}}
         <li class="menu-item {{ request()->is('transaction') ? 'active' : '' }}">
             <a href="{{route('transaction')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cart"></i>
                 <div data-i18n="Transactions">penjualan</div>
             </a>
+
+            @if (Auth::user()->role == 'admin')
             <!-- inventori -->
         <li class="menu-item  {{ request()->is('supplier*')|| request()->is('stock*')? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -55,7 +56,9 @@
 
             </ul>
         </li>
+        @endif
 
+        @if (Auth::user()->role == 'admin')
         {{-- Produk --}}
         <li class="menu-item {{ request()->is('kategori*')|| request()->is('produk*')? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -77,9 +80,46 @@
                 </li>
             </ul>
         </li>
+        @endif
 
+
+        @if (Auth::user()->role == 'admin')
+        {{-- Laporan --}}
+        <li class="menu-item {{ request()->is('report*')|| request()->is('outflow*')|| request()->is('cetakoutflowview*')? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-line-chart-down"></i>
+                <div data-i18n="Misc">Laporan</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('report') ? 'active' : '' }}">
+                    <a href="{{ route('report') }}" class="menu-link">
+                        <div data-i18n="Error">Transaksi Masuk</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('outflow') ? 'active' : '' }}">
+                    <a href="{{ route('outflow') }}" class="menu-link">
+                        <div data-i18n="Under Maintenance">Transaksi keluar</div>
+                    </a>
+                </li>
+                {{-- <li class="menu-item {{ request()->is('cetakoutflowview') ? 'active' : '' }}">
+                    <a href="{{ route('outflowcetakview') }}" class="menu-link">
+                        <div data-i18n="Under Maintenance">cetak laporan</div>
+                    </a>
+                </li> --}}
+            </ul>
+        </li>
+        @endif
+
+        @if (Auth::user()->role == 'admin')
+        {{-- User --}}
         {{-- user --}}
-        <li class="menu-item {{ request()->is('user*')|| request()->is('acces*')? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is('user') ? 'active' : '' }}">
+            <a href="{{route('user')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Analytics">User</div>
+            </a>
+        </li>
+        {{-- <li class="menu-item {{ request()->is('user*')|| request()->is('acces*')? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Account Settings">User</div>
@@ -90,38 +130,9 @@
                         <div data-i18n="Account">User</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <div data-i18n="Account">Hak Akses</div>
-                    </a>
-                </li>
             </ul>
-        </li>
-
-        <li class="menu-item {{ request()->is('report*')|| request()->is('outflow*')? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-line-chart-down"></i>
-                <div data-i18n="Misc">Laporan</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('report') }}" class="menu-link">
-                        <div data-i18n="Error">laporan masuk</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('outflow') }}" class="menu-link">
-                        <div data-i18n="Under Maintenance">laporan keluar</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('outflowcetakview') }}" class="menu-link">
-                        <div data-i18n="Under Maintenance">cetak laporan</div>
-                    </a>
-                </li>
-            </ul>
-            
-        </li>
+        </li> --}}
+        @endif
 
         
 

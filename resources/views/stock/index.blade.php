@@ -41,7 +41,7 @@
                 </form>
               </td>
               <td>
-                <a href="{{ route('stock.edit', $row->id) }}" class="btn btn-success">Tambah Stock</a>
+                <a href="{{ route('stock.edit', $row->id) }}" class="btn btn-success">Ubah Stock</a>
               </td>
             </tr>
           @endforeach

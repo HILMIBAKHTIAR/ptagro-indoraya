@@ -85,7 +85,7 @@
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger">Hapus</button>
                 </form>
-                <a href="{{ route('user.edit', $row->id) }}" class="btn btn-success" data-toggle="modal" data-target="#modaledit">Edit</a>
+                <a href="{{ route('user.edit', $row->id) }}" class="btn btn-success">Edit</a>
               </td>
             </tr>
             @endforeach

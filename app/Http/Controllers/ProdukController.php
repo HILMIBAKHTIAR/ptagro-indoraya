@@ -26,7 +26,6 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        //
         $produk = Produk::all();
         $kategori = Kategori::all();
         $stock = Stock::all();
@@ -41,7 +40,6 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
             'kode_produk' => 'required',
             'nama_produk' => 'required',
@@ -63,16 +61,7 @@ class ProdukController extends Controller
             $request->photo->move(public_path('photo'), $input['photo']);
             try {
                 $id = Produk::insertGetId($input);
-
                 $data_bahan = [];
-                // array_map(function ($val=>$i) use ($id) {
-                //     return [
-                //         'produk_id' => $id,
-                //         'stock_id' => $val,
-                //         'qty' => $request->bahan_qty[$val],
-                //     ];
-                // }, $stock_id);
-
                 foreach ($stock_id as $key => $value) {
                     array_push($data_bahan, [
                         'produk_id' => $id,
@@ -127,27 +116,23 @@ class ProdukController extends Controller
     {
         //
         $request->validate([
+            'kode_produk' => 'required',
             'nama_produk' => 'required',
             'kategori_id' => 'required',
             'harga' => 'required',
             'keterangan' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $produk = Produk::find($id);
-        if ($request->hasFile('photo')) {
-            $photo = $request->file('photo');
-            $photo_name = time() . '.' . $photo->getClientOriginalExtension();
-            $photo->move(public_path('photo'), $photo_name);
-            $produk->photo = $photo_name;
-        }
+
+        $produk->nama_produk = $request->get('kode_produk');
         $produk->nama_produk = $request->get('nama_produk');
         $produk->kategori_id = $request->get('kategori_id');
         $produk->harga = $request->get('harga');
         $produk->keterangan = $request->get('keterangan');
         $produk->save();
 
-        return redirect('/produk')->with('success', 'Data berhasil diubah');
+        return redirect('/produk')->with('message', 'Data berhasil diubah');
     }
 
     /**
@@ -161,6 +146,6 @@ class ProdukController extends Controller
         //
         $data_produk = Produk::findOrFail($id);
         $data_produk->delete();
-        return redirect('/produk')->with('status', 'Data Produk Berhasil diHapus');
+        return redirect('/produk')->with('status', 'Data produk berhasil dihapus');
     }
 }

@@ -19,46 +19,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card" style="min-height:85vh">
-                    <div class="card-header">
-                        <ul class="nav nav-pills col-md-12" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true">semua</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-profile" type="button" role="tab"
-                                    aria-controls="pills-profile" aria-selected="false">es kopi</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-contact" type="button" role="tab"
-                                    aria-controls="pills-contact" aria-selected="false">soda</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-contact" type="button" role="tab"
-                                    aria-controls="pills-contact" aria-selected="false">milk</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-contact" type="button" role="tab"
-                                    aria-controls="pills-contact" aria-selected="false">teh</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-contact" type="button" role="tab"
-                                    aria-controls="pills-contact" aria-selected="false">snack</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-contact" type="button" role="tab"
-                                    aria-controls="pills-contact" aria-selected="false">lain</button>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="card" style="min-height:85vh">  
                     <div class="card-body">
                         <div class="row">
                             @foreach ($data_produk as $produk)
@@ -141,8 +102,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-close-modal" data-bs-dismiss="modal" onclick="document.location.reload()" >Tutup</button>
-                            <a href="#" target="_blank"
-                                class="btn btn-sm btn-cetak-pdf">Cetak Struk</a>
+                            {{-- <a href="{{ route('transaction.cetak') }}" target="_blank"
+                                class="btn btn-sm btn-cetak-pdf">Cetak Struk</a> --}}
                         </div>
                     </div>
                 </div>
@@ -219,7 +180,7 @@
 
                                 <div id="info-pembayaran" class="d-none">
                                     <!-- // diskon -->
-                                    <div class="d-flex align-items-center mb-2">
+                                    {{-- <div class="d-flex align-items-center mb-2">
                                         <div class="flex-grow-1">
                                             <p class="fs-5 m-0">Diskon</p>
                                             <a href="javascript:void(0)"><small>Ubah diskon</small></a>
@@ -227,7 +188,7 @@
                                         <div class="">
                                             <p class="m-0 fs-3"><b>33%</b></p>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- // subtotal -->
                                     <div class="d-flex align-items-center">
@@ -241,7 +202,7 @@
                                     </div>
 
                                     <div class="input-group my-3">
-                                        <span class="input-group-text">^</span>
+                                        <span class="input-group-text">Rp</span>
                                         <input type="number" name="bayar" class="form-control"
                                             placeholder="Inputkan nominal uang">
                                     </div>
@@ -270,7 +231,6 @@
                     
                     return 'Rp' + number.format(val ?? 0);
                 }
-
                 function qty(_this, plus_or_minus) {
                     let id = $(_this).closest('.data-produk').data('id')
                     let data_produk = data.list_pesanan.filter(val => val.id == id)[0]
@@ -363,15 +323,11 @@
                     $('#transaction_form').serializeArray().forEach((val, i) => {
                         data_transaksi[val.name] = val.value
                     });
-
-                    // let diskon = 50;
                     let body_data = {
                         ...data,
                         ...data_transaksi,
                         total_produk: data.list_pesanan.length,
                         subtotal: subtotal,
-                        // diskon: diskon,
-                        // total: subtotal-(subtotal*diskon/100),
                         total: subtotal,
                     }
 

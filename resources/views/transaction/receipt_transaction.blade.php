@@ -1,162 +1,361 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title></title>
-	<style type="text/css">
-		*{
-			font-family: Arial, sans-serif;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+	<style>
+		/* -------------------------------------
+    GLOBAL
+    A very basic CSS reset
+------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    font-size: 14px;
+}
 
-		.center{
-			text-align: center;
-		}
+img {
+    max-width: 100%;
+}
 
-		.right{
-			text-align: right;
-		}
+body {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: none;
+    width: 100% !important;
+    height: 100%;
+    line-height: 1.6;
+}
 
-		.left{
-			text-align: left;
-		}
+/* Let's make sure all tables have defaults */
+table td {
+    vertical-align: top;
+}
 
-		p{
-			font-size: 10px;
-		}
+/* -------------------------------------
+    BODY & CONTAINER
+------------------------------------- */
+body {
+    background-color: #f6f6f6;
+}
 
-		.top-min{
-			margin-top: -10px;
-		}
+.body-wrap {
+    background-color: #f6f6f6;
+    width: 100%;
+}
 
-		.uppercase{
-			text-transform: uppercase;
-		}
+.container {
+    display: block !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    /* makes it centered */
+    clear: both !important;
+}
 
-		.bold{
-			font-weight: bold;
-		}
+.content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+    padding: 20px;
+}
 
-		.d-block{
-			display: block;
-		}
+/* -------------------------------------
+    HEADER, FOOTER, MAIN
+------------------------------------- */
+.main {
+    background: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 3px;
+}
 
-		hr{
-			border: 0;
-			border-top: 1px solid #000;
-		}
+.content-wrap {
+    padding: 20px;
+}
 
-		.hr-dash{
-			border-style: dashed none none none;
-		}
+.content-block {
+    padding: 0 0 20px;
+}
 
-		table{
-			font-size: 10px;
-		}
+.header {
+    width: 100%;
+    margin-bottom: 20px;
+}
 
-		table thead tr td{
-			padding: 5px;
-		}
+.footer {
+    width: 100%;
+    clear: both;
+    color: #999;
+    padding: 20px;
+}
+.footer a {
+    color: #999;
+}
+.footer p, .footer a, .footer unsubscribe, .footer td {
+    font-size: 12px;
+}
 
-		.w-100{
-			width: 100%;
-		}
+/* -------------------------------------
+    TYPOGRAPHY
+------------------------------------- */
+h1, h2, h3 {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    color: #000;
+    margin: 40px 0 0;
+    line-height: 1.2;
+    font-weight: 400;
+}
 
-		.line{
-			border: 0;
-			border-top: 1px solid #000;
-			border-style: dashed none none none;
-		}
+h1 {
+    font-size: 32px;
+    font-weight: 500;
+}
 
-		.body{
-			margin-top: -10px;
-		}
+h2 {
+    font-size: 24px;
+}
 
-		.b-p{
-			font-size: 12px !important;
-		}
+h3 {
+    font-size: 18px;
+}
 
-		.w-long{
-			width: 80px;
-		}
+h4 {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+p, ul, ol {
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+p li, ul li, ol li {
+    margin-left: 5px;
+    list-style-position: inside;
+}
+
+/* -------------------------------------
+    LINKS & BUTTONS
+------------------------------------- */
+a {
+    color: #1ab394;
+    text-decoration: underline;
+}
+
+.btn-primary {
+    text-decoration: none;
+    color: #FFF;
+    background-color: #1ab394;
+    border: solid #1ab394;
+    border-width: 5px 10px;
+    line-height: 2;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 5px;
+    text-transform: capitalize;
+}
+
+/* -------------------------------------
+    OTHER STYLES THAT MIGHT BE USEFUL
+------------------------------------- */
+.last {
+    margin-bottom: 0;
+}
+
+.first {
+    margin-top: 0;
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.alignright {
+    text-align: right;
+}
+
+.alignleft {
+    text-align: left;
+}
+
+.clear {
+    clear: both;
+}
+
+/* -------------------------------------
+    ALERTS
+    Change the class depending on warning email, good email or bad email
+------------------------------------- */
+.alert {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 500;
+    padding: 20px;
+    text-align: center;
+    border-radius: 3px 3px 0 0;
+}
+.alert a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+}
+.alert.alert-warning {
+    background: #f8ac59;
+}
+.alert.alert-bad {
+    background: #ed5565;
+}
+.alert.alert-good {
+    background: #1ab394;
+}
+
+/* -------------------------------------
+    INVOICE
+    Styles for the billing table
+------------------------------------- */
+.invoice {
+    margin: 40px auto;
+    text-align: left;
+    width: 80%;
+}
+.invoice td {
+    padding: 5px 0;
+}
+.invoice .invoice-items {
+    width: 100%;
+}
+.invoice .invoice-items td {
+    border-top: #eee 1px solid;
+}
+.invoice .invoice-items .total td {
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #333;
+    font-weight: 700;
+}
+
+/* -------------------------------------
+    RESPONSIVE AND MOBILE FRIENDLY STYLES
+------------------------------------- */
+@media only screen and (max-width: 640px) {
+    h1, h2, h3, h4 {
+        font-weight: 600 !important;
+        margin: 20px 0 5px !important;
+    }
+
+    h1 {
+        font-size: 22px !important;
+    }
+
+    h2 {
+        font-size: 18px !important;
+    }
+
+    h3 {
+        font-size: 16px !important;
+    }
+
+    .container {
+        width: 100% !important;
+    }
+
+    .content, .content-wrap {
+        padding: 10px !important;
+    }
+
+    .invoice {
+        width: 100% !important;
+    }
+}
 	</style>
 </head>
+
 <body>
-	<div class="header">
-		<p class="uppercase bold d-block center b-p">{{ $market->nama_toko }}</p>
-		<p class="top-min d-block center">{{ $market->alamat }}</p>
-		<p class="top-min d-block center">{{ $market->no_telp }}</p>
-		<hr class="hr-dash">
-		<table class="w-100">
-			<tr>
-				<td class="left w-long">Kode Transaksi : </td>
-				<td class="left">{{ $transaction->kode_transaksi }}</td>
-				<td class="right">Kasir : </td>
-				@php
-				$nama_kasir = explode(' ', $transaction->kasir);
-				$kasir = $nama_kasir[0];
-				@endphp
-				<td class="right">{{ $kasir }}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td class="left" colspan="3">{{ date('d M, Y', strtotime($transaction->created_at)) }}</td>
-			</tr>
-		</table>
-		<hr class="hr-dash">
-	</div>
-	<div class="body">
-		<table class="w-100">
-			<thead>
-				<tr>
-					<td>Nama Barang</td>
-					<td>Qty</td>
-					<td>Harga</td>
-					<td>Jumlah</td>
-				</tr>
-				<tr>
-					<td colspan="4" class="line"></td>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($transactions as $transaksi)
-				<tr>
-					<td>{{ $transaksi->nama_barang }}</td>
-					<td>{{ $transaksi->jumlah }}</td>
-					<td>{{ number_format($transaksi->harga,2,',','.') }}</td>
-					<td>{{ number_format($transaksi->total_barang,2,',','.') }}</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
-		<hr class="hr-dash">
-		<table class="w-100">
-			<tr>
-				<td class="left">Subtotal (Jumlah : {{ $transactions->count() }})</td>
-				<td class="right">{{ number_format($transaction->subtotal,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="left">Diskon ({{ $transaction->diskon }}%)</td>
-				<td class="right">{{ number_format($diskon,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="left">Total</td>
-				<td class="right">{{ number_format($transaction->total,2,',','.') }}</td>
-			</tr>
-		</table>
-		<hr class="hr-dash">
-		<table class="w-100">
-			<tr>
-				<td class="left">Bayar</td>
-				<td class="right">{{ number_format($transaction->bayar,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="left">Kembali</td>
-				<td class="right">{{ number_format($transaction->kembali,2,',','.') }}</td>
-			</tr>
-		</table>
-		<hr class="hr-dash">
-	</div>
-	<div class="footer">
-		<p class="center">Terima Kasih Telah Berkunjung</p>
-	</div>
+    <table class="body-wrap">
+        <tbody>
+            <tr>
+                <td></td>
+                <td class="container" width="600">
+                    <div class="content">
+                        <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td class="content-wrap aligncenter">
+                                        <table width="100%" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="content-block">
+                                                        <h2>Thanks for using our app</h2>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="content-block">
+                                                        <table class="invoice">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+																		Hilmi<br>Invoice #T01031314444414<br>25 agustus 2022
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <table class="invoice-items" cellpadding="0"
+                                                                            cellspacing="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>Service 1</td>
+                                                                                    <td class="alignright">$ 20.00</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Service 2</td>
+                                                                                    <td class="alignright">$ 10.00</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Service 3</td>
+                                                                                    <td class="alignright">$ 6.00</td>
+                                                                                </tr>
+                                                                                <tr class="total">
+                                                                                    <td class="alignright" width="80%">
+                                                                                        Total</td>
+                                                                                    <td class="alignright">$ 36.00</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="content-block">
+                                                        <span>Telp. 085704283273</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="content-block">
+                                                        Jln Songgon, Pangestulan ,Singojuruh
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="footer">
+                            
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+
 </html>

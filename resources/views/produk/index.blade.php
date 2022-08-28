@@ -8,6 +8,11 @@
       {{ session()->get('message') }}
   </div>
   @endif
+  @if(session()->has('status'))
+  <div class="alert alert-danger">
+      {{ session()->get('status') }}
+  </div>
+  @endif
   
   <h4 class="fw-bold py-3 mb-4">Tables Produk</h4>
 

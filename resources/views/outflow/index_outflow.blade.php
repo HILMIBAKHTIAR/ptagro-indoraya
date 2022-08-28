@@ -30,6 +30,7 @@
                                 <th>Tanggal Pembelian</th>
                                 <th>Keterangan</th>
                                 <th>Jumlah</th>
+                                <th>invoicceeee</th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -53,11 +54,13 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div>
+                        {{ $data_outflow->links() }}
+                    </div>
+                    {{-- {{ $data_outflow->links() }} --}}
                 </div>
             </div>
             <!--/ Basic Bootstrap Table -->
-
-            <hr class="my-5" />
             <!--/ Responsive Table -->
         </div>
         @endsection

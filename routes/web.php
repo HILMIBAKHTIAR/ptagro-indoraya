@@ -26,7 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['midleware' => 'auth', 'checkRole:admin,kasir'], function () {
     Route::resource('/kategori', 'KategoriController');
     //kelola supplier
-    Route::get('/supplier', 'SupplierController@index')->name('supplier');
+    Route::get('/supplier', 'SupplierController@index')->name('supplier')->middleware('checkRole:admin');
     Route::get('/supplier/create', 'SupplierController@create')->name('supplier.create');
     Route::post('/supplier/store', 'SupplierController@store')->name('supplier.store');
     Route::get('/supplier/{id}/edit', 'SupplierController@edit')->name('supplier.edit');
@@ -35,29 +35,29 @@ Route::group(['midleware' => 'auth', 'checkRole:admin,kasir'], function () {
 
 
     //kelola produk
-    Route::get('/produk', 'ProdukController@index')->name('produk');
+    Route::get('/produk', 'ProdukController@index')->name('produk')->middleware('checkRole:admin');
     Route::get('/produk/edit/{id}', 'ProdukController@edit')->name('produk.edit');
     Route::post('/produk/store', 'ProdukController@store')->name('produk.store');
-    Route::post('/produk/update/{id}', 'ProdukController@update')->name('produk.update');
+    Route::patch('/produk/{produk}', 'ProdukController@update')->name('produk.update');
     Route::delete('/produk/destroy/{id}', 'ProdukController@destroy')->name('produk.destroy');
 
 
     // transaksi
     Route::get('/transaction', 'TransactionManageController@viewTransaction')->name('transaction');
-    Route::get('/transaction/product/{id}', 'TransactionManageController@transactionProduct');
-    Route::get('/transaction/product/check/{id}', 'TransactionManageController@transactionProductCheck');
     Route::post('/transaction/process', 'TransactionManageController@transactionProcess')->name('transaction.process');
+    Route::get('/transaction/receiptTransaction', 'TransactionManageController@receiptTransaction')->name('transaction.cetak');
+
 
     //Kelola User
-    Route::get('/user', 'UserManageController@viewAccount')->name('user');
+    Route::get('/user', 'UserManageController@viewAccount')->name('user')->middleware('checkRole:admin');
     Route::post('/user/create', 'UserManageController@createAccount')->name('user.create');
     Route::delete('/user/delete/{id}', 'UserManageController@deleteAccount')->name('user.delete');
-    Route::get('/account/edit/{id}', 'UserManageController@editAccount')->name('user.edit');
-    Route::post('/account/update', 'UserManageController@updateAccount');
+    Route::get('/user/edit/{id}', 'UserManageController@editAccount')->name('user.edit');
+    Route::patch('/account/{users}', 'UserManageController@update')->name('user.update');
     Route::get('/account/filter/{id}', 'UserManageController@filterTable');
 
     // Kelola Report Income
-    Route::get('/report', 'ReportManageController@viewReport')->name('report');
+    Route::get('/report', 'ReportManageController@viewReport')->name('report')->middleware('checkRole:admin');
 
     //kelola Outflow
     Route::get('/outflow', 'OutflowController@viewOutflow')->name('outflow');

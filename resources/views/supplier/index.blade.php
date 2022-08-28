@@ -8,7 +8,7 @@
       {{ session()->get('message') }}
   </div>
   @endif
-  <h4 class="fw-bold py-3 mb-4">Tables Supplier</h4>
+  <h4 class="fw-bold py-3 mb-4">Table Supplier</h4>
 
   <!-- Basic Bootstrap Table -->
   <div class="card">

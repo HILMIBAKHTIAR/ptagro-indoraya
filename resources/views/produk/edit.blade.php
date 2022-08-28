@@ -53,14 +53,15 @@
                                 value="{{ old('harga') }}" />
                         </div>
                     </div>
-                    {{-- <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-name">Alamat</label>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">nama produk</label>
                         <div class="col-sm-10">
-                            <input name="alamat" value="{{ $produk->alamat }}" type="text"
-                                class="form-control @error('alamat') is-invalid @enderror"
-                                value="{{ old('alamat') }}" />
+                            <input name="keterangan" value="{{ $produk->keterangan }}" type="text"
+                                class="form-control @error('keterangan') is-invalid @enderror"
+                                value="{{ old('keterangan') }}" />
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="col text-center">
 
                         <button type="submit" class="btn btn-success btn-lg">Update</button>

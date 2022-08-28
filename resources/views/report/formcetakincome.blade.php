@@ -44,8 +44,7 @@
                             <th>Total</th>
                             <th>Bayar</th>
                             <th>Kembali</th>
-                            <th>tanggal</th>
-                            <th>Kasir</th>
+                            <th>kasir</th>
                             {{-- <th>Actions</th> --}}
                           </tr>
                         </thead>
@@ -57,7 +56,6 @@
                             <td>{{ $row->total }}</td>
                             <td>{{ $row->bayar }}</td>
                             <td>{{ $row->kembali }}</td>
-                            <td>{{ date('d M Y h:i', strtotime($row->created_at))}}</td>
                             <td>
                                 @if($row->kasir == 'admin')
                                     <button type="button" class="btn btn-admin">{{ $row->kasir }}</button>
@@ -66,7 +64,9 @@
                                     <button type="button" class="btn btn-kasir">{{ $row->kasir }}</button>
                                 @endif
                             </td>
-                            {{-- <td><a href="#" class="btn btn-success">detail</a></td> --}}
+                            <td>
+                              detail
+                            </td>
                           </tr>
                             @endforeach
                         </tbody>
@@ -89,39 +89,4 @@
         </div>
     </div>
     @endsection
-    
-    @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-
-const labels = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-];
-const data = {
-  labels: labels,
-  datasets: [{
-    label: 'My First dataset',
-    backgroundColor: 'rgb(255, 99, 132)',
-    borderColor: 'rgb(255, 99, 132)',
-    data: [0, 10, 5, 2, 20, 30, 45],
-  }]
-};
-      const config = {
-        type: 'line',
-        data: data,
-        options: {}
-      };
-
-      const myChart = new Chart(
-          document.getElementById('myChart'),
-          config
-        );
-
-    </script>
 @endpush

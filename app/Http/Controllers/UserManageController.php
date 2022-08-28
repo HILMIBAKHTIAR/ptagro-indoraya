@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class UserManageController extends Controller
 {
@@ -38,34 +39,7 @@ class UserManageController extends Controller
             $users = User::all();
         }
     }
-    // // Show View New Account
-    // public function viewNewAccount()
-    // {
-    //     $id_account = Auth::id();
-    //     $check_access = Acces::where('user', $id_account)
-    //         ->first();
-    //     if ($check_access->kelola_akun == 1) {
-    //         return view('user.create');
-    //     } else {
-    //         return back();
-    //     }
-    // }
 
-    // // Filter Account Table
-    // public function filterTable($id)
-    // {
-    //     $id_account = Auth::id();
-    //     $check_access = Acces::where('user', $id_account)
-    //         ->first();
-    //     if ($check_access->kelola_akun == 1) {
-    //         $users = User::orderBy($id, 'asc')
-    //             ->get();
-
-    //         return view('manage_account.filter_table.table_view', compact('users'));
-    //     } else {
-    //         return back();
-    //     }
-    // }
 
     // Create New Account
     public function createAccount(Request $req)
@@ -137,9 +111,9 @@ class UserManageController extends Controller
                     $access = new Acces;
                     $access->user = $users->id;
                     $access->kelola_akun = 0;
-                    $access->kelola_produk = 1;
+                    $access->kelola_produk = 0;
                     $access->transaksi = 1;
-                    $access->kelola_laporan = 1;
+                    $access->kelola_laporan = 0;
                     $access->save();
                 }
 
@@ -167,16 +141,48 @@ class UserManageController extends Controller
     // Edit Account
     public function editAccount($id)
     {
-        $id_account = Auth::id();
-        $check_access = Acces::where('user', $id_account)
-            ->first();
-        if ($check_access->kelola_akun == 1) {
-            $user = User::find($id);
+        $user = User::find($id);
+        return view('user.edit', compact('user'));
+    }
 
-            return response()->json(['user' => $user]);
-        } else {
-            return back();
+    public function update(Request $req, $id)
+    {
+        $req->validate([
+            'name' => 'required',
+            'email' => 'email',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
+
+        $user = User::find($id);
+        $user->name = $req->get('name');
+        $user->email = $req->get('email');
+        $user->role = $req->get('role');
+        $user->password = $req->get('password');
+        if ($req->password != null) {
+            $user->password = Hash::make($req->password);
         }
+        if ($req->role == 'admin') {
+            $access = new Acces;
+            $access->$user = $user->id;
+            $access->kelola_akun = 1;
+            $access->kelola_produk = 1;
+            $access->transaksi = 1;
+            $access->kelola_laporan = 1;
+            $access->save();
+        } else {
+            $access = new Acces;
+            $access->$user = $user->id;
+            $access->kelola_akun = 0;
+            $access->kelola_produk = 0;
+            $access->transaksi = 1;
+            $access->kelola_laporan = 0;
+            $access->save();
+        }
+        $user->update();
+        return redirect('/users$users', with('success', 'akun berhasil di ubah'));
+        // $users->save();
+
     }
 
     // Update Account
@@ -254,21 +260,4 @@ class UserManageController extends Controller
         $user->delete();
         return redirect('/user')->with('status', 'Data Supplier Berhasil Dihapus');
     }
-    // Delete Account
-    // public function deleteAccount($id)
-    // {
-    //     $id_account = Auth::id();
-    //     $check_access = Acces::where('user', $id_account)
-    //         ->first();
-    //     if ($check_access->kelola_akun == 1) {
-    //         User::destroy($id);
-    //         Acces::where('user', $id)->delete();
-
-    //         Session::flash('delete_success', 'Akun berhasil dihapus');
-
-    //         return back();
-    //     } else {
-    //         return back();
-    //     }
-    // }
 }
