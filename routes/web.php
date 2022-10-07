@@ -53,7 +53,7 @@ Route::group(['midleware' => 'auth', 'checkRole:admin,kasir'], function () {
     Route::post('/user/create', 'UserManageController@createAccount')->name('user.create');
     Route::delete('/user/delete/{id}', 'UserManageController@deleteAccount')->name('user.delete');
     Route::get('/user/edit/{id}', 'UserManageController@editAccount')->name('user.edit');
-    Route::patch('/account/{users}', 'UserManageController@update')->name('user.update');
+    Route::patch('/user/{user}', 'UserManageController@updateAccount')->name('user.update')->middleware('auth');
     Route::get('/account/filter/{id}', 'UserManageController@filterTable');
 
     // Kelola Report Income

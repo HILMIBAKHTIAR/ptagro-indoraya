@@ -37,8 +37,9 @@
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
           @csrf
+					<img src="{{ url('/loginview/images/air.png') }}" class="rounded mx-auto d-block mb-1" alt="">
 					<span class="login100-form-title p-b-43">
-						Grey Pos
+						PT Agro Indoraya
 					</span>
 					
 					
@@ -63,7 +64,7 @@
 					</div>
 				</form>
 
-				<div class="login100-more" style="background-image: url('loginview/images/greylogin1.jpeg');">
+				<div class="login100-more" style="background-image: url('loginview/images/loginpage.jpg');">
 				</div>
 			</div>
 		</div>

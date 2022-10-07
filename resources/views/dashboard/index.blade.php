@@ -11,7 +11,7 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="row">
-                        <p class="font-weight-bold">Jumlah Customer/Hari</p>
+                        <p class="font-weight-bold"><strong>Jumlah Customer/Hari</strong></p>
                       </div>
                       <div class="row">
                         <p>{{ $customers_daily }} Orang</p>
@@ -23,10 +23,10 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="row">
-                        <p class="font-weight-bold">Pemasukan Harian</p>
+                        <p class="font-weight-bold"><strong>Pemasukan Harian</strong></p>
                       </div>
                       <div class="row">
-                        <p>{{ number_format($incomes_daily,2,',','.') }}</p>
+                        <p>Rp {{ number_format($incomes_daily,2,',','.') }}</p>
                       </div>
                     </div>
                   </div>

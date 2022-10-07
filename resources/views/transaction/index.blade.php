@@ -58,14 +58,14 @@
                             <div class="row">
                                 <div class="col-12 text-center mb-4">
                                     <img src="{{ asset('assets/img/gif/successtr.gif') }}">
-                                    <h4 class="transaction-success-text">Transaksi Berhasil</h4>
+                                    <h4>Transaksi Berhasil</h4>
                                 </div>
                                 <div class="col-12">
                                     <table class="table-receipt">
                                         <tr>
                                             <td>
                                                 <span class="d-block little-td">Kode Transaksi</span>
-                                                <span class="d-block font-weight-bold" id="kdtransaksi" >T1020120102131</span>
+                                                <span class="d-block font-weight-bold" id="kdtransaksi" ></span>
                                             </td>
                                             <td>
                                                 <span class="d-block little-td">Tanggal</span>
@@ -122,7 +122,7 @@
                                     <table class="table-payment-1">
                                         <tr class="kd-transaction">
                                             <td class="text-left">kode transaksi</td>
-                                            <td class="text-right">T{{ date('dmYHis') }}</td>
+                                            <td class="text-right"><strong>T{{ date('dmYHis') }}</strong></td>
                                             <input type="text" name="kode_transaksi" value="T{{ date('dmYHis') }}"
                                                 hidden="">
                                         </tr>
@@ -346,9 +346,9 @@
                             $('#successModal').find('#kdtransaksi').text(response.data.kode_transaksi)
                             $('#successModal').find('#tanggal').text(response.data.created_at)
                             $('#successModal').find('#casir').text(response.data.kasir)
-                            $('#successModal').find('#total_trk').text(response.data.total)
-                            $('#successModal').find('#money').text(response.data.bayar)
-                            $('#successModal').find('#back').text(response.data.kembali)
+                            $('#successModal').find('#total_trk').text(rupiah(response.data.total))
+                            $('#successModal').find('#money').text(rupiah(response.data.bayar))
+                            $('#successModal').find('#back').text(rupiah(response.data.kembali))
                         } else if (response.type == 'warning') {
                             
                             let alertbayar = $('#alertbayar')

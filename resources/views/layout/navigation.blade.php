@@ -4,9 +4,9 @@
             {{-- <span class="app-brand-logo demo">
                 <img src="{{ asset('/assets/img/greylogo.png') }}" alt="Brand Logo" class="img-fluid" style="width: 70px;height:70px">
             </span> --}}
-            <span class="app-brand-text demo">
-                <span class="text-brand">GREY</span>
-                <span class="text-muted">POS</span>
+            <img src="{{ url('/loginview/images/air.png') }}" class="rounded mx-auto d-block mb-1" width="35px" alt="">
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">
+                Agro Indoraya
             </span>
             {{-- <div>
                 <span class="text-brand">GREY POS</span>

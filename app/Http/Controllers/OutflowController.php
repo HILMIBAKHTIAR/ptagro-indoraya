@@ -25,9 +25,12 @@ class OutflowController extends Controller
             'tanggal_pembelian' => 'required',
             'keterangan' => 'required',
             'jumlah_pembelian' => 'required',
+            'invoice' => 'required'
         ]);
 
         $data_outflow = new Outflow();
+        $data_outflow['invoice'] = time() . '.' . $request->invoice->getClientOriginalExtension();
+        $request->invoice->move(public_path('invoice'), $data_outflow['invoice']);
         $data_outflow->tanggal_pembelian           = $request->tanggal_pembelian;
         $data_outflow->keterangan                       = $request->keterangan;
         $data_outflow->jumlah_pembelian            = $request->jumlah_pembelian;
@@ -59,7 +62,7 @@ class OutflowController extends Controller
         $data_outflow->keterangan = $request->get('keterangan');
         $data_outflow->jumlah_pembelian = $request->get('jumlah_pembelian');
         $data_outflow->save();
-        return redirect('/outflow')->with('success', 'Data berhasil diubah');
+        return redirect('/outflow')->with('message', 'Data berhasil diubah');
     }
 
     public function destroy($id)

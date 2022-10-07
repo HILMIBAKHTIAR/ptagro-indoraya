@@ -147,6 +147,7 @@ class UserManageController extends Controller
 
     public function update(Request $req, $id)
     {
+        // return json_encode($req->all());
         $req->validate([
             'name' => 'required',
             'email' => 'email',
@@ -179,20 +180,18 @@ class UserManageController extends Controller
             $access->kelola_laporan = 0;
             $access->save();
         }
-        $user->update();
-        return redirect('/users$users', with('success', 'akun berhasil di ubah'));
-        // $users->save();
-
+        $user->save();
+        return redirect('/users', with('message', 'akun berhasil di ubah'));
     }
 
     // Update Account
-    public function updateAccount(Request $req)
+    public function updateAccount(Request $req, $id)
     {
         $id_account = Auth::id();
         $check_access = Acces::where('user', $id_account)
             ->first();
         if ($check_access->kelola_akun == 1) {
-            $user_account = User::find($req->id);
+            $user_account = User::find($id);
             $check_email = User::all()
                 ->where('email', $req->email)
                 ->count();
@@ -201,7 +200,7 @@ class UserManageController extends Controller
                 ->count();
 
             if (($req->foto != '' && $check_email == 0 && $check_username == 0) || ($req->foto != '' && $user_account->email == $req->email && $user_account->username == $req->username) || ($req->foto != '' && $check_email == 0 && $user_account->username == $req->username) || ($req->foto != '' && $user_account->email == $req->email && $check_username == 0)) {
-                $user = User::find($req->id);
+                $user = User::find($id);
                 $user->nama = $req->nama;
                 $user->role = $req->role;
                 $foto = $req->file('foto');
@@ -213,7 +212,7 @@ class UserManageController extends Controller
 
                 Session::flash('update_success', 'Akun berhasil diubah');
 
-                return redirect('/account');
+                return redirect('/user');
             } else if (($req->foto == '' && $check_email == 0 && $check_username == 0) || ($req->foto == '' && $user_account->email == $req->email && $user_account->username == $req->username) || ($req->foto == '' && $check_email == 0 && $user_account->username == $req->username) || ($req->foto == '' && $user_account->email == $req->email && $check_username == 0)) {
                 if ($req->nama_foto == 'default.jpg') {
                     $user = User::find($req->id);
@@ -258,6 +257,6 @@ class UserManageController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect('/user')->with('status', 'Data Supplier Berhasil Dihapus');
+        return redirect('/user')->with('message', 'Data Supplier Berhasil Dihapus');
     }
 }
